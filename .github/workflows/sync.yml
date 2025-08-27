@@ -1,0 +1,26 @@
+name: Daily Sync from Public Repo
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2:00 AM UTC
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone source (public) repo
+        run: |
+          git clone --mirror https://github.com/HKS-MS/azuremarketplace-workstream.git source-repo
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to target repo
+        run: |
+          cd source-repo
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/HKS-MS/themigratedone.git
+          git push --mirror
