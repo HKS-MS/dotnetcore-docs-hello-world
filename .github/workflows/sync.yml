@@ -1,8 +1,6 @@
 name: Daily Sync from Public Repo
 
 on:
-  schedule:
-    - cron: '0 2 * * *'  # Daily at 2:00 AM UTC
   workflow_dispatch:
 
 jobs:
